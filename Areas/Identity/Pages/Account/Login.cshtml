@@ -1,0 +1,114 @@
+﻿@page
+@model LoginModel
+
+@{
+    ViewData["Title"] = "Log in";
+}
+
+<div class="container py-2">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5" style="background-color: #F5F5F5; border-radius: 0.5rem;">
+                    <h2 class="text-center mb-4 text-theme">@ViewData["Title"]</h2>
+                    <hr class="mb-4" style="border-top: 2px solid #00796B;" />
+                    <form id="account" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Email" class="form-label fw-semibold text-theme">Email</label>
+                            <input asp-for="Input.Email" class="form-control border-secondary" autocomplete="username"
+                                   placeholder="name@example.com" required style="border: 1px solid #00796B;" id="email"/>
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.Password" class="form-label fw-semibold text-theme">Password</label>
+                            <input asp-for="Input.Password" class="form-control border-secondary" autocomplete="current-password"
+                                   placeholder="Password" required style="border: 1px solid #00796B;" id="password"/>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center mt-4">
+                            <a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"
+                               class="btn btn-outline-primary btn-md"
+                               style="border-color: #00796B; color: #00796B;">
+                                Sign Up
+                            </a>
+                            <button id="login-submit" type="submit"
+                                    class="btn btn-md btn-theme">
+                                Login
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr class="mt-2" />
+    <div>
+        <h5 class="text-center text-theme">Demo User Accounts</h5>
+        <p class="text-center text-muted mb-1">Click Demo User:</p>
+        <ul class="list-group mt-3" id="demo-users">
+            <li class="list-group-item d-flex justify-content-between align-items-center demo-user"
+                data-email="network@user.com" data-password="Network0)">
+                <div>
+                    <strong>Role: </strong>Technician (Network)
+                    <strong>Email: </strong>network@user.com
+                    <strong>Password: </strong>Network0)
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center demo-user"
+                data-email="databack@user.com" data-password="Databack0)">
+                <div>
+                    <strong>Role: </strong>Technician (Data backup)
+                    <strong>Email: </strong>databack@user.com
+                    <strong>Password: </strong>Databack0)
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center demo-user"
+                data-email="malware@user.com" data-password="Malware0)">
+                <div>
+                    <strong>Role: </strong>Technician (Malware)
+                    <strong>Email: </strong>malware@user.com
+                    <strong>Password: </strong>Malware0)
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center demo-user"
+                data-email="authentication@user.com" data-password="Authentication0)">
+                <div>
+                    <strong>Role: </strong>Technician (Authentication)
+                    <strong>Email: </strong>authentication@user.com
+                    <strong>Password: </strong>Authentication0)
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center demo-user"
+                data-email="mobile@user.com" data-password="Mobile0)">
+                <div>
+                    <strong>Role: </strong>Technician (Mobile Security)
+                    <strong>Email: </strong>mobile@user.com
+                    <strong>Password: </strong>Mobile0)
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center demo-user"
+                data-email="incident@user.com" data-password="Incident0)">
+                <div>
+                    <strong>Role: </strong>Technician (Incident Response)
+                    <strong>Email: </strong>incident@user.com
+                    <strong>Password: </strong>Incident0)
+                </div>
+            </li>
+            <li class="list-group-item d-flex justify-content-between align-items-center demo-user"
+                data-email="enduser@user.com" data-password="Enduser0)">
+                <div>
+                    <strong>Role: </strong>End User
+                    <strong>Email: </strong>enduser@user.com
+                    <strong>Password: </strong>Enduser0)
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<script src="/js/demoUser.js"></script>
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

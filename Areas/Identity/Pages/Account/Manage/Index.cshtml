@@ -1,0 +1,50 @@
+﻿@page
+@model IndexModel
+@using static NLPHelpDesk.Helpers.Constants;
+@{
+    ViewData["Title"] = "Profile";
+    ViewData["ActivePage"] = ManageNavPages.Index;
+    Layout = "./_Layout.cshtml";
+}
+
+<h3 class="text-theme mb-4">@ViewData["Title"]</h3>
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <partial name="_StatusMessage" for="StatusMessage" />
+        <div class="card shadow-lg border-0">
+            <div class="card-body p-5" style="background-color: #F5F5F5; border-radius: 0.5rem;">
+                <form id="profile-form" method="post">
+                    <div class="mb-3">
+                        <label asp-for="Input.FirstName" class="form-label fw-semibold">First Name</label>
+                        <input asp-for="Input.FirstName" class="form-control" placeholder="Enter your first name" required style="border: 1px;" />
+                        <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.LastName" class="form-label fw-semibold">Last Name</label>
+                        <input asp-for="Input.LastName" class="form-control" placeholder="Enter your last name" required style="border: 1px;" />
+                        <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                    </div>
+                    @if (User.IsInRole(ROLE_TECHNICIAN))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label fw-semibold">Help Desk Category</label>
+                            <select asp-for="Input.SelectedCategory" asp-items="Model.Categories" class="form-select" style="border: 1px;">
+                                <option value="">Select a help desk category</option>
+                            </select>
+                            <span asp-validation-for="Input.SelectedCategory" class="text-danger"></span>
+                        </div>
+                    }
+                    <div class="text-center">
+                        <button id="update-profile-button" type="submit" class="btn btn-theme btn-lg w-100">
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

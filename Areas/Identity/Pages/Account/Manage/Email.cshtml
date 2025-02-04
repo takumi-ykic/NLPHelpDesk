@@ -1,0 +1,45 @@
+﻿@page
+@model EmailModel
+@{
+    ViewData["Title"] = "Manage Email";
+    ViewData["ActivePage"] = ManageNavPages.Email;
+    Layout = "./_Layout.cshtml";
+}
+
+<h3 class="text-theme mb-4">@ViewData["Title"]</h3>
+<div class="row">
+    <div class="col-md-8 col-lg-6">
+        <partial name="_StatusMessage" for="StatusMessage" />
+        <div class="card shadow-lg border-0">
+            <div class="card-body p-5" style="background-color: #F5F5F5; border-radius: 0.5rem;">
+                <form id="email-form" method="post">
+                    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Current Email</label>
+                        <div class="input-group">
+                            <input asp-for="Email" class="form-control" disabled style="border: 1px;"/>
+                            <div class="input-group-append">
+                                <span class="input-group-text text-success font-weight-bold">✓</span>
+                            </div>
+                        </div>
+                        <div class="form-text">This is your current email address.</div>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="Input.NewEmail" class="form-label fw-semibold">New Email</label>
+                        <input asp-for="Input.NewEmail" class="form-control" autocomplete="email" aria-required="true" placeholder="Please enter a new email address." style="border: 1px;"/>
+                        <span asp-validation-for="Input.NewEmail" class="text-danger"></span>
+                    </div>
+                    <div class="text-center">
+                        <button id="change-email-button" type="submit" asp-page-handler="ChangeEmail" class="btn btn-theme btn-lg w-100">
+                            Change Email
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

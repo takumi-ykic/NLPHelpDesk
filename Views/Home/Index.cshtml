@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mt-5">
+    <h1 class="mb-4">Welcome to NLP Help Desk</h1>
+    <p class="lead">Streamlining ticket management</p>
+    <div class="d-flex justify-content-center mt-4">
+        <form asp-action="ToLogin" asp-controller="Home" method="get">
+            <button type="submit" class="btn btn-theme btn-lg me-3">Log in</button>
+        </form>
+        <form asp-action="ToSignup" asp-controller="Home" method="get">
+            <button type="submit" class="btn btn-outline-theme btn-lg">Sign up</button>
+        </form>
+    </div>
+</div>

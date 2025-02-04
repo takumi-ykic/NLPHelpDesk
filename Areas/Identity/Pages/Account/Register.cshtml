@@ -1,0 +1,72 @@
+﻿@page
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container px-3">
+    <div class="row d-flex justify-content-center align-items-center">
+        <div class="col-md-6 col-lg-5">
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-5">
+                    <h2 class="text-center mb-4 text-theme">@ViewData["Title"]</h2>
+                    <p class="text-center text-secondary">Please fill in the details to create your account.</p>
+                    <hr />
+                    <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post">
+                        <div asp-validation-summary="ModelOnly" class="text-danger mb-3" role="alert"></div>
+                        <div class="mb-3">
+                            <label for="input-select-role" class="form-label fw-semibold text-theme">Role</label>
+                            <select asp-for="Input.SelectedRole" asp-items="Model.Roles" class="form-select border-secondary" id="input-select-role" onchange="handleChangeRole()" required>
+                                <option value="">Select a role</option>
+                            </select>
+                            <span asp-validation-for="Input.SelectedRole" class="text-danger"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label asp-for="Input.Email" class="form-label fw-semibold text-theme">Email</label>
+                            <input asp-for="Input.Email" class="form-control border-secondary" autocomplete="username" placeholder="name@example.com" required />
+                            <span asp-validation-for="Input.Email" class="text-danger"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label asp-for="Input.Password" class="form-label fw-semibold text-theme">Password</label>
+                            <input asp-for="Input.Password" class="form-control border-secondary" autocomplete="new-password" placeholder="Password" required />
+                            <small class="form-text text-muted">Minimum 6 characters with a mix of uppercase, lowercase, numbers, and symbols.</small>
+                            <span asp-validation-for="Input.Password" class="text-danger"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label asp-for="Input.ConfirmPassword" class="form-label fw-semibold text-theme">Confirm Password</label>
+                            <input asp-for="Input.ConfirmPassword" class="form-control border-secondary" autocomplete="new-password" placeholder="Confirm Password" required />
+                            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+                        </div>
+                        <div class="mb-1">
+                            <label asp-for="Input.FirstName" class="form-label fw-semibold text-theme">First Name</label>
+                            <input asp-for="Input.FirstName" class="form-control border-secondary" autocomplete="firstname" placeholder="First Name" required />
+                            <span asp-validation-for="Input.FirstName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Input.LastName" class="form-label fw-semibold text-theme">Last Name</label>
+                            <input asp-for="Input.LastName" class="form-control border-secondary" autocomplete="lastname" placeholder="Last Name" required />
+                            <span asp-validation-for="Input.LastName" class="text-danger"></span>
+                        </div>
+                        <div class="mb-3" id="input-hd-category" style="display:none">
+                            <label for="input-select-category" class="form-label fw-semibold text-theme">Help Desk Category</label>
+                            <select asp-for="Input.SelectedCategory" asp-items="Model.Categories" class="form-select border-secondary" id="input-select-category">
+                                <option value="">Select a help desk category</option>
+                            </select>
+                            <span asp-validation-for="Input.SelectedCategory" class="text-danger"></span>
+                        </div>
+                        <div class="text-center">
+                            <button id="registerSubmit" type="submit" class="btn btn-theme btn-lg w-100 mb-3">Sign Up</button>
+                            <a asp-page="./Login" asp-route-returnUrl="@Model.ReturnUrl" class="btn btn-outline-secondary btn-lg w-100">Log in</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/js/register.js"></script>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

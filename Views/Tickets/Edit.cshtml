@@ -1,0 +1,63 @@
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using NLPHelpDesk.Enums
+@model NLPHelpDesk.Models.Ticket
+@using static NLPHelpDesk.Helpers.Constants;
+
+@{
+    ViewData[VIEW_DATA_TITLE] = TITLE_EDIT + Model.TicketTitle;
+}
+
+<div class="row justify-content-center mt-4">
+    <div class="col-md-8">
+        <div class="card shadow-sm">
+            <div class="card-header bg-theme text-white">
+                <h5 class="mb-0">@ViewData[VIEW_DATA_TITLE]</h5>
+            </div>
+            <div class="card-body">
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(m => m.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+                <form asp-action="Edit">
+                    <div class="form-group mb-3">
+                        <label asp-for="TicketDescription" class="form-label">@Html.DisplayNameFor(model => model.TicketDescription)</label>
+                        <textarea asp-for="TicketDescription" class="form-control" rows="3" maxlength="350" placeholder="Enter the ticket description..." required></textarea>
+                        <span asp-validation-for="TicketDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Status" class="form-label">@Html.DisplayNameFor(model => model.Status)</label>
+                        <select asp-for="Status" name="status" class="form-select w-50" asp-items="@ViewBag.TicketStatus"></select>
+                        <span asp-validation-for="Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group mb-3">
+                        <label asp-for="Priority" class="form-label">@Html.DisplayNameFor(model => model.Priority)</label>
+                        <select asp-for="Priority" name="priority" class="form-select w-50" asp-items="@Html.GetEnumSelectList<Priority>()"></select>
+                        <span asp-validation-for="Priority" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-flex justify-content-between align-items-center mt-4">
+                        <a class="btn btn-outline-dark btn-sm" asp-action="Details" asp-route-ticketId="@Model.TicketId">
+                            <i class="bi bi-arrow-left-circle"></i> Back to Details
+                        </a>
+                        <div>
+                            <input type="hidden" asp-for="TicketId" value="@Model.TicketId"/>
+                            <button type="submit" class="btn btn-theme" name="action" value="Save">
+                                <i class="bi bi-check-circle"></i> Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
