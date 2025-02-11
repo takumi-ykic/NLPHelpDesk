@@ -37,7 +37,7 @@ public class Constants
     public const string AZURE_BLOB_CONTAINER_FILES = "AzureSettings:ContainerFiles";
     public const string AZURE_STORAGE_ACCOUNT_NAME = "AzureSettings:StorageAccountName";
     public const string AZURE_BLOB_ACCESS_KEY = "AzureSettings:BlobAccessKey";
-    public const string AZURE_STORAGE_QUEUE_NAME_PREDICTION = "QueueName";
+    public const string AZURE_STORAGE_QUEUE_NAME_PREDICTION = "AzureQueue:PredictionQueue";
     public const string AZURE_WEB_JOBS_STORAGE = "AzureWebJobsStorage";
 
     public const int MAX_FILE_SIZE = 8 * 1024 * 1024;
