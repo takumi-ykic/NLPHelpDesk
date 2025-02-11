@@ -12,7 +12,7 @@ var host = new HostBuilder()
     {
         // Get connection string from environment variables
         string connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_DefaultConnection");
-
+        
         // Register ApplicationContext with Entity Framework Core
         services.AddDbContext<ApplicationContext>(options =>
             options.UseSqlServer(connectionString));

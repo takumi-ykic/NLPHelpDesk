@@ -49,7 +49,7 @@ public class TicketPredictionProcess
     /// <returns>A task representing the asynchronous operation.</returns>
     [Function("TicketPredictionProcess")]
     public async Task RunAsync(
-        [QueueTrigger(AZURE_STORAGE_QUEUE_NAME_PREDICTION, Connection = AZURE_WEB_JOBS_STORAGE)] QueueMessage message)
+        [QueueTrigger("nlphelpdesk-ticket-prediction", Connection = "AzureWebJobsStorage")] QueueMessage message)
     {
         try
         {

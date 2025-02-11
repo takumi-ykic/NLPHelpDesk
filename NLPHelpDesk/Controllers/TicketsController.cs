@@ -189,7 +189,8 @@ public class TicketsController : Controller
             // Get the current user's ID and role.
             string userId = _user.Id;
             string role = await _userHelper.GetUserRoleAsync(_user);
-            
+
+            newTicket.TicketDescription = newTicket.TicketDescription.Trim();
             newTicket.UserId = userId;
             newTicket.IssueDate = DateTime.UtcNow;
 
