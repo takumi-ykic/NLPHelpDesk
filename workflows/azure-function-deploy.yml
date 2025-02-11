@@ -19,7 +19,7 @@ jobs:
         dotnet-version: '9.x'
 
     - name: Restore dependencies
-      run: dotnet restore nlphelpdesk.sln
+      run: dotnet restore ./nlphelpdesk.sln
 
     - name: Build and publish Azure Function
         run: dotnet publish nlphelpdesk.function/nlphelpdesk.function.csproj --configuration Release --output ./functionpublish

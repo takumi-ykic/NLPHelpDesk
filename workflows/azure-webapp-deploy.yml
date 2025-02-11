@@ -22,7 +22,7 @@ jobs:
         dotnet-version: '9.x'  # Replace with your .NET version
 
     - name: Restore dependencies
-      run: run: dotnet restore nlphelpdesk.sln
+      run: dotnet restore ./nlphelpdesk.sln
 
     - name: Build and publish
         run: dotnet publish nlphelpdesk/nlphelpdesk.csproj --configuration Release --output ./publish
