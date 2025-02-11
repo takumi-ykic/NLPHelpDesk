@@ -1,0 +1,32 @@
+name: Build and deploy Azure Function to Azure Function App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up .NET Core
+      uses: actions/setup-dotnet@v2
+      with:
+        dotnet-version: '9.x'
+
+    - name: Restore dependencies
+      run: dotnet restore nlphelpdesk.sln
+
+    - name: Build and publish Azure Function
+        run: dotnet publish nlphelpdesk.function/nlphelpdesk.function.csproj --configuration Release --output ./functionpublish
+
+    - name: Deploy to Azure Function App
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: nlphelpdesk-function
+        publish-profile: ${{ secrets.AZURE_FUNCTION_PUBLISH_PROFILE }}
+        package: ./publish
