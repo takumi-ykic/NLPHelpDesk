@@ -1,0 +1,25 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center mt-5">
+    <h1 class="mb-4">Welcome to NLP Help Desk</h1>
+    <p class="lead">Streamlining ticket management</p>
+
+    <div id="loading" class="mt-4">
+        <p>We are connecting to the database, please bear with us. Sorry for the wait!</p>
+        <p>Loading data...</p>
+        <div class="spinner-border text-theme" role="status"></div>
+    </div>
+    
+    <div class="d-flex justify-content-center mt-4" style="display: none;">
+        <form asp-action="ToLogin" asp-controller="Home" method="get">
+            <button type="submit" id="login-btn" class="btn btn-theme btn-lg me-3" disabled>Log in</button>
+        </form>
+        <form asp-action="ToSignup" asp-controller="Home" method="get">
+            <button type="submit" id="signup-btn" class="btn btn-outline-theme btn-lg" disabled>Sign up</button>
+        </form>
+    </div>
+</div>
+
+<script src="/js/home.js"></script>

@@ -1,0 +1,129 @@
+@model NLPHelpDesk.Data.Models.Ticket;
+@using static NLPHelpDesk.Helpers.Constants;
+
+@{
+    ViewData[VIEW_DATA_TITLE] = TITLE_TICKET_COMPLETION_DETAILS + Model.TicketTitle;
+}
+
+<div class="primary-content-heading d-flex justify-content-between align-items-center my-4">
+    <div class="d-flex flex-column">
+        <h2 class="mb-0">@ViewData[VIEW_DATA_TITLE]</h2>
+    </div>
+    <div>
+        <a asp-action="Index" asp-route-isCompleted="true" class="btn btn-light">
+            <i class="bi bi-arrow-left-circle"></i> Back to List
+        </a>
+    </div>
+</div>
+<div class="row g-4">
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-theme text-white">
+                <h5 class="mb-0">Completion Details</h5>
+            </div>
+            <div class="card-body">
+                <h6 class="text-secondary mb-2">Help Desk Category</h6>
+                <P>
+                    <span class="badge bg-theme text-white shadow-sm" style="font-size: 1rem; padding: 0.5rem 0.75rem; display: inline-flex; align-items: center;">
+                        <i class="bg-theme bi-shield-fill" style="font-size: 1.1rem;"></i>@Model.HelpDeskCategory.CategoryName
+                    </span>
+                </p>
+                <h6 class="text-secondary mb-2">Description:</h6>
+                <p class="text-justify mb-4" style="font-size: 1rem; line-height: 1.6;">
+                    @Model.TicketDescription
+                </p>
+                <h6 class="text-secondary mb-2">Solution:</h6>
+                <p class="text-justify" style="font-size: 1rem; line-height: 1.6;">
+                    @Model.TicketCompletion!.Answer
+                </p>
+                <h6 class="text-secondary mb-2">Difficulty:</h6>
+                <p>@Model.TicketCompletion!.Difficulty</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Ticket Details</h5>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-6">Ticket ID:</dt>
+                    <dd class="col-6">@Model.TicketId</dd>
+                    <dt class="col-6">@Html.DisplayNameFor(model => model.Product.ProductName)</dt>
+                    <dd class="col-6">@Html.DisplayFor(model => model.Product.ProductName)</dd>
+                    <dt class="col-6">Status:</dt>
+                    <dd class="col-6">
+                        <span class="badge rounded-pill status-badge bg-light text-dark border border-dark">@Model.Status</span>
+                    </dd>
+                    <dt class="col-6">Priority:</dt>
+                    <dd class="col-6">@Model.Priority</dd>
+                    <dt class="col-6">@Html.DisplayNameFor(model => model.IssueDate)</dt>
+                    <dd class="col-6">@Html.DisplayFor(model => model.IssueDate)</dd>
+                    <dt class="col-6">Issuer:</dt>
+                    <dd class="col-6">@Html.DisplayFor(model => model.CreateUser.FirstName) @Html.DisplayFor(model => model.CreateUser.LastName)</dd>
+                    <dt class="col-6">@Html.DisplayNameFor(model => model.TicketCompletion.CompletionDate):</dt>
+                    <dd class="col-6">@Html.DisplayFor(model => model.TicketCompletion.CompletionDate)</dd>
+                    <dt class="col-6">Priority:</dt>
+                    <dd class="col-6">@Model.Priority</dd>
+                </dl>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Assigned Users</h5>
+            </div>
+            <div class="card-body">
+                @if (Model.UserTickets?.Any() == true)
+                {
+                    <ul class="list-group list-group-flush">
+                        @foreach (var userTicket in Model.UserTickets)
+                        {
+                            var user = userTicket.AppUser;
+                            if (user != null)
+                            {
+                                var categoryName = user.HelpDeskCategory.CategoryName;
+                                var fullName = user.FirstName + " " + user.LastName;
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div class="d-flex align-items-center">
+                                        <span class="font-weight-bold me-3">@fullName</span>
+                                        <span class="badge bg-theme text-white rounded-pill">@categoryName</span>
+                                    </div>
+                                </li>
+                            }
+                        }
+                    </ul>
+                }
+                else
+                {
+                    <p class="text-muted">No users assigned to this ticket.</p>
+                }
+            </div>
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="card shadow-sm">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0">Comments</h5>
+                <span class="badge bg-light text-dark ms-2">@(Model.Comments?.Count() ?? 0)</span>
+            </div>
+            <div class="card-body">
+                <div class="scrollable-list" style="max-height: 600px; overflow-y: auto;">
+                    @if (Model.Comments?.Any() == true)
+                    {
+                        @foreach (var comment in Model.Comments)
+                        {
+                            @await Html.PartialAsync("_CommentCard", comment)
+                        }
+                    }
+                    else
+                    {
+                        <p class="text-muted">No comments available.</p>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

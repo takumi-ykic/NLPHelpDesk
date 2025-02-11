@@ -1,0 +1,15 @@
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Function\bin\output\NLPHelpDesk.Data.deps.json
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Function\bin\output\NLPHelpDesk.Data.dll
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Function\bin\output\NLPHelpDesk.Data.pdb
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\bin\Debug\net9.0\NLPHelpDesk.Data.deps.json
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\bin\Debug\net9.0\NLPHelpDesk.Data.dll
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\bin\Debug\net9.0\NLPHelpDesk.Data.pdb
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\NLPHelpDesk.Data.csproj.AssemblyReference.cache
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\NLPHelpDesk.Data.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\NLPHelpDesk.Data.AssemblyInfoInputs.cache
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\NLPHelpDesk.Data.AssemblyInfo.cs
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\NLPHelpDesk.Data.csproj.CoreCompileInputs.cache
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\NLPHelpDesk.Data.dll
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\refint\NLPHelpDesk.Data.dll
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\NLPHelpDesk.Data.pdb
+C:\Users\myt26\Dev\Portfolio\NLPHelpDesk\NLPHelpDesk\NLPHelpDesk.Data\obj\Debug\net9.0\ref\NLPHelpDesk.Data.dll
