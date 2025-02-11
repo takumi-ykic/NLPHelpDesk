@@ -18,7 +18,6 @@ var host = new HostBuilder()
             options.UseSqlServer(connectionString));
 
         // Register your existing service classes from ASP.NET Core project
-        services.AddDbContext<ApplicationContext>();
         services.AddScoped<ITicketService, TicketService>();
         services.AddScoped<IHelpDeskCategoryService, HelpDeskCategoryService>();
         services.AddScoped<ICategoryPredictionService, CategoryPredictionService>();
