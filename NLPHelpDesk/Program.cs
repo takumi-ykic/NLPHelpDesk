@@ -60,9 +60,6 @@ builder.Services.AddScoped<IAzureBlobService, AzureBlobService>();
 builder.Services.AddScoped<UserHelper>();
 builder.Services.Configure<QueueSettings>(builder.Configuration.GetSection("AzureQueue"));
 builder.Services.AddSingleton<IQueueService, QueueService>();
-builder.Services.AddScoped<ICategoryPredictionService, CategoryPredictionService>();
-builder.Services.AddScoped<IPriorityPredictionService, PriorityPredictionService>();
-builder.Services.AddMemoryCache();
 builder.Services.AddHttpContextAccessor();
 
 // Policy
