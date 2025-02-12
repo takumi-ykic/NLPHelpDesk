@@ -31,4 +31,11 @@
       <Folder Include="MLModels\" />
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="MLModels\category_model.zip" />
+      <EmbeddedResource Include="MLModels\category_model.zip" />
+      <None Remove="MLModels\priority_model.zip" />
+      <EmbeddedResource Include="MLModels\priority_model.zip" />
+    </ItemGroup>
+
 </Project>

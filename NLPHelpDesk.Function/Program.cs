@@ -22,7 +22,8 @@ var host = new HostBuilder()
         services.AddScoped<IHelpDeskCategoryService, HelpDeskCategoryService>();
         services.AddScoped<ICategoryPredictionService, CategoryPredictionService>();
         services.AddScoped<IPriorityPredictionService, PriorityPredictionService>();
-
+        services.AddScoped<IProductService, ProductService>();
+        
         services.AddScoped<TicketPredictionProcess>();
 
         services.AddLogging();

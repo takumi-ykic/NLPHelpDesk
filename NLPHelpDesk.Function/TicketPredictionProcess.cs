@@ -53,66 +53,75 @@ public class TicketPredictionProcess
     {
         try
         {
-            // Deserialize the queue message.
-            var json = Encoding.UTF8.GetString(Convert.FromBase64String(message.MessageText));
-            var data = JsonSerializer.Deserialize<TicketQueueMessage>(json);
+            string decodedMessage = message.MessageText;
 
-            // Validate the message.
-            if (data == null)
+            // Deserialize the JSON string
+            var data = JsonSerializer.Deserialize<TicketQueueMessage>(decodedMessage);
+
+            try
             {
-                _logger.LogWarning("Invalid message received");
-                return;
-            }
-
-            _logger.LogInformation($"Processing Ticket {data.TicketId}");
-
-            // Retrieve the ticket
-            var ticket = await _ticketService.GetTicketEdit(data.TicketId);
-            if (ticket == null)
-            {
-                _logger.LogWarning($"Ticket {data.TicketId} not found.");
-                return;
-            }
-
-            // Prepare input for prediction
-            var inputData = new CsvData
-            {
-                Text = $"{ticket.TicketTitle},{ticket.TicketDescription}"
-            };
-
-            // Predict category
-            var categoryPrediction = await _categoryPredictionService.GetCategoryPrediction(inputData);
-            var category = await _helpDeskCategoryService.GetHelpDeskCategory(categoryPrediction.PredictedCategory);
-
-            // Predict priority
-            var priorityPrediction = await _priorityPredictionService.GetPriorityPrediction(inputData);
-            var priority = Enum.TryParse<Priority>(priorityPrediction.PredictedPriority, true, out var priorityEnum)
-                ? priorityEnum
-                : Priority.Low;
-
-            // Update ticket in database
-            var updateResult = await _ticketService.UpdateTicket(ticket.TicketId, category.CategoryId, priority);
-
-            if (updateResult)
-            {
-                // Assign ticket to a user
-                bool assignResult = data.Role == ROLE_TECHNICIAN
-                    ? await _ticketService.CreateUserTicket(ticket.TicketId, data.UserId)
-                    : await _ticketService.CreateUserTicket(ticket.TicketId); // Assign to available user
-
-                if (!assignResult)
+                // Validate the message.
+                if (data == null)
                 {
-                    _logger.LogError($"Failed to assign ticket {data.TicketId} to user {data.UserId ?? "Unassigned"}");
+                    _logger.LogWarning("Invalid message received");
+                    return;
+                }
+
+                _logger.LogInformation($"Processing Ticket {data.TicketId}");
+
+                // Retrieve the ticket
+                var ticket = await _ticketService.GetTicketEdit(data.TicketId);
+                if (ticket == null)
+                {
+                    _logger.LogWarning($"Ticket {data.TicketId} not found.");
+                    return;
+                }
+
+                // Prepare input for prediction
+                var inputData = new CsvData
+                {
+                    Text = $"{ticket.TicketTitle},{ticket.TicketDescription}"
+                };
+
+                // Predict category
+                var categoryPrediction = await _categoryPredictionService.GetCategoryPrediction(inputData);
+                var category = await _helpDeskCategoryService.GetHelpDeskCategory(categoryPrediction.PredictedCategory);
+
+                // Predict priority
+                var priorityPrediction = await _priorityPredictionService.GetPriorityPrediction(inputData);
+                var priority = Enum.TryParse<Priority>(priorityPrediction.PredictedPriority, true, out var priorityEnum)
+                    ? priorityEnum
+                    : Priority.Low;
+
+                // Update ticket in database
+                var updateResult = await _ticketService.UpdateTicket(ticket.TicketId, category.CategoryId, priority);
+
+                if (updateResult)
+                {
+                    // Assign ticket to a user
+                    bool assignResult = data.Role == ROLE_TECHNICIAN
+                        ? await _ticketService.CreateUserTicket(ticket.TicketId, data.UserId)
+                        : await _ticketService.CreateUserTicket(ticket.TicketId); // Assign to available user
+
+                    if (!assignResult)
+                    {
+                        _logger.LogError($"Failed to assign ticket {data.TicketId} to user {data.UserId ?? "Unassigned"}");
+                    }
+                }
+                else
+                {
+                    _logger.LogError($"Failed to process ticket {data.TicketId}");
                 }
             }
-            else
+            catch (Exception ex)
             {
-                _logger.LogError($"Failed to process ticket {data.TicketId}");
+                _logger.LogError(ex, "Error processing ticket.");
             }
         }
-        catch (Exception ex)
+        catch (FormatException ex)
         {
-            _logger.LogError(ex, "Error processing ticket.");
+            _logger.LogError($"Error decoding Base64 string: {ex.Message}");
+            return;
         }
     }
 }

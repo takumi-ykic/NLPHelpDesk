@@ -1,8 +1,7 @@
-using Microsoft.Extensions.Caching.Memory;
+using System.Reflection;
 using Microsoft.ML;
 using NLPHelpDesk.Interfaces;
 using NLPHelpDesk.Data.Models;
-using static NLPHelpDesk.Helpers.Constants;
 
 namespace NLPHelpDesk.Services;
 
@@ -13,17 +12,15 @@ public class PriorityPredictionService : IPriorityPredictionService
 {
     private readonly MLContext _mlContext;
     private readonly ILogger<PriorityPredictionService> _logger;
-    private readonly IMemoryCache _memoryCache;
 
     /// <summary>
     /// Initializes a new instance of the <see cref="PriorityPredictionService"/> class.
     /// </summary>
     /// <param name="memoryCache">The memory cache to store the trained model.</param>
-    public PriorityPredictionService(IMemoryCache memoryCache, ILogger<PriorityPredictionService> logger)
+    public PriorityPredictionService(ILogger<PriorityPredictionService> logger)
     {
         _mlContext = new MLContext(seed: 0);
         _logger = logger;
-        _memoryCache = memoryCache;
     }
     
     /// <summary>
@@ -33,26 +30,14 @@ public class PriorityPredictionService : IPriorityPredictionService
     /// <returns>A <see cref="PriorityPrediction"/> object containing the predicted priority, or null if an error occurs.</returns>
     public async Task<PriorityPrediction> GetPriorityPrediction(CsvData inputData)
     {
-        // Check if the prediction engine is already in the cache.
-        if (!_memoryCache.TryGetValue(CACHE_KEY_PRIORITY_MODEL,
-                out PredictionEngine<CsvData, PriorityPrediction> predictionEngine))
+        var model = await GetModelAsync();
+        if (model == null)
         {
-            var model = await GetModelAsync();
-            if (model == null)
-            {
-                // Return null if model training fails.
-                return null;
-            }
-
-            // Create the prediction engine.
-            predictionEngine =
-                _mlContext.Model.CreatePredictionEngine<CsvData, PriorityPrediction>(model, ignoreMissingColumns: true);
-
-            // Store the prediction engine in the cache with a sliding expiration of 180 days.
-            var cacheEntryOptions = new MemoryCacheEntryOptions()
-                .SetSlidingExpiration(TimeSpan.FromDays(180));
-            _memoryCache.Set(CACHE_KEY_PRIORITY_MODEL, predictionEngine, cacheEntryOptions);
+            return null;
         }
+        
+        // Create the prediction engine.
+        var predictionEngine = _mlContext.Model.CreatePredictionEngine<CsvData, PriorityPrediction>(model, ignoreMissingColumns: true);
         
         // Make the prediction using the cached prediction engine.
         return predictionEngine.Predict(inputData);
@@ -65,22 +50,48 @@ public class PriorityPredictionService : IPriorityPredictionService
     /// <returns>The trained <see cref="ITransformer"/> model, or null if training fails.</returns>
     private async Task<ITransformer> GetModelAsync()
     {
-        // Get path for model
-        string currentDir = Directory.GetCurrentDirectory();
-        string solutionRoot = Path.GetFullPath(Path.Combine(currentDir, ".."));
-        string modelFolderPath = Path.Combine(solutionRoot, "NLPHelpDesk", "MLModels");
-        string categoryModelPath = Path.Combine(modelFolderPath, "priority_model.zip");
-        
-        if (System.IO.File.Exists(categoryModelPath))
+        string modelPath;
+
+        // Check if running locally or in Azure
+        if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development")
         {
-            // Load the trained model from file
-            DataViewSchema modelSchema;
-            var model = _mlContext.Model.Load(categoryModelPath, out modelSchema);
-            return model;
+            // For local development, model is in the MLModels folder
+            modelPath = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..")), "NLPHelpDesk", "MLModels", "priority_model.zip");
         }
         else
         {
-            _logger.LogError("Category model file not found.");
+            // For Azure, model will be extracted to the HOME directory
+            modelPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "priority_model.zip");
+        }
+        
+        // Get path for model
+        var assembly = Assembly.GetExecutingAssembly();
+        string resourceName = "NLPHelpDesk.MLModels.priority_model.zip";
+
+        using (var stream = assembly.GetManifestResourceStream(resourceName))
+        {
+            if (stream == null)
+            {
+                _logger.LogError("Model resource not found in the assembly.");
+                return null;
+            }
+            
+            using (var fileStream = new FileStream(modelPath, FileMode.Create, FileAccess.Write))
+            {
+                await stream.CopyToAsync(fileStream);
+            }
+        }
+        
+        try
+        {
+            DataViewSchema modelSchema;
+            var model = _mlContext.Model.Load(modelPath, out modelSchema);
+            _logger.LogInformation("Model loaded successfully.");
+            return model;
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error loading the model.");
             return null;
         }
     }
