@@ -13,7 +13,7 @@ This project is structured into four main components:
 
 *   **NLPHelpDesk (ASP.NET Core Web Application):** This is the main web application that handles user interaction, ticket management, product management, and communication. It triggers the Azure Function for ticket categorization and prioritization.
 *   **NLPHelpDesk.Data (Class Library):** This library contains the data models, enums, and the `ApplicationDbContext` (Entity Framework Core context) used by the web application.
-*   **NLPHelpDesk.Function (Azure Function):** This Azure Function is triggered by the web application. It executes the category and priority prediction using NLP and TF-IDF with pre-trained ML.NET models.
+*   **NLPHelpDesk.Function (Azure Functions):** This Azure Functions is triggered by the web application. It executes the category and priority prediction using NLP and TF-IDF with pre-trained ML.NET models.
 *   **NLPHelpDesk.Train (Console Application):** This console application is used for training the ML.NET models locally. It reads a CSV file containing training data, trains separate models for category and priority prediction, and then stores these trained models in the `NLPHelpDesk.Function` project for deployment to Azure.
 
 
@@ -49,4 +49,4 @@ This project is structured into four main components:
 *   **Azure SQL Database:** Provides persistent data storage.
 *   **Azure Blob Storage:** Stores and retrieves image files and text files related to comments.
 *   **Azure Queue Storage:** Used for asynchronous communication and processing, potentially for tasks like handling large volumes of incoming tickets or background processing of NLP tasks.
-*   **Azure Function:** Hosts the NLP prediction function.  The trained models are deployed as part of this function.
+*   **Azure Functions:** Hosts the NLP prediction function.  The trained models are deployed as part of this function.
