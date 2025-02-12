@@ -36,4 +36,17 @@
       <ProjectReference Include="..\NLPHelpDesk.Data\NLPHelpDesk.Data.csproj" />
       <ProjectReference Include="..\NLPHelpDesk\NLPHelpDesk.csproj" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="MLModels\" />
+    </ItemGroup>
+    <ItemGroup>
+      <None Remove="MLModels\category_model.zip" />
+      <Content Include="MLModels\category_model.zip">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+      <None Remove="MLModels\priority_model.zip" />
+      <Content Include="MLModels\priority_model.zip">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 </Project>

@@ -3,6 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using NLPHelpDesk.Data;
 using NLPHelpDesk.Function;
+using NLPHelpDesk.Function.Interfaces;
+using NLPHelpDesk.Function.Services;
 using NLPHelpDesk.Interfaces;
 using NLPHelpDesk.Services;
 

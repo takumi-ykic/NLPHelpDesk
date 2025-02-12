@@ -1,6 +1,6 @@
 using NLPHelpDesk.Data.Models;
 
-namespace NLPHelpDesk.Interfaces;
+namespace NLPHelpDesk.Function.Interfaces;
 
 /// <summary>
 /// Defines the interface for a service that predicts the category of a given data input

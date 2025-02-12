@@ -1,12 +1,12 @@
-using System.Reflection;
+using Microsoft.Extensions.Logging;
 using Microsoft.ML;
-using NLPHelpDesk.Interfaces;
 using NLPHelpDesk.Data.Models;
+using NLPHelpDesk.Function.Interfaces;
 
-namespace NLPHelpDesk.Services;
+namespace NLPHelpDesk.Function.Services;
 
 /// <summary>
-/// Implements the <see cref="IPriorityPredictionService"/> interface to provide ticket priority predictions using machine learning.
+/// Implements the <see cref="NLPHelpDesk.Function.Interfaces.IPriorityPredictionService"/> interface to provide ticket priority predictions using machine learning.
 /// </summary>
 public class PriorityPredictionService : IPriorityPredictionService
 {
@@ -50,38 +50,53 @@ public class PriorityPredictionService : IPriorityPredictionService
     /// <returns>The trained <see cref="ITransformer"/> model, or null if training fails.</returns>
     private async Task<ITransformer> GetModelAsync()
     {
-        string modelPath;
-
-        // Check if running locally or in Azure
-        if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development")
-        {
-            // For local development, model is in the MLModels folder
-            modelPath = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..")), "NLPHelpDesk", "MLModels", "priority_model.zip");
-        }
-        else
-        {
-            // For Azure, model will be extracted to the HOME directory
-            modelPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "priority_model.zip");
-        }
+        // string modelPath;
+        //
+        // // Check if running locally or in Azure
+        // if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development")
+        // {
+        //     // For local development, model is in the MLModels folder
+        //     modelPath = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..")), "NLPHelpDesk", "MLModels", "priority_model.zip");
+        // }
+        // else
+        // {
+        //     // For Azure, model will be extracted to the HOME directory
+        //     modelPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "priority_model.zip");
+        // }
+        //
+        // // Get path for model
+        // var assembly = Assembly.GetExecutingAssembly();
+        // string resourceName = "NLPHelpDesk.MLModels.priority_model.zip";
+        //
+        // using (var stream = assembly.GetManifestResourceStream(resourceName))
+        // {
+        //     if (stream == null)
+        //     {
+        //         _logger.LogError("Model resource not found in the assembly.");
+        //         return null;
+        //     }
+        //     
+        //     using (var fileStream = new FileStream(modelPath, FileMode.Create, FileAccess.Write))
+        //     {
+        //         await stream.CopyToAsync(fileStream);
+        //     }
+        // }
+        //
+        // try
+        // {
+        //     DataViewSchema modelSchema;
+        //     var model = _mlContext.Model.Load(modelPath, out modelSchema);
+        //     _logger.LogInformation("Model loaded successfully.");
+        //     return model;
+        // }
+        // catch (Exception ex)
+        // {
+        //     _logger.LogError(ex, "Error loading the model.");
+        //     return null;
+        // }
         
-        // Get path for model
-        var assembly = Assembly.GetExecutingAssembly();
-        string resourceName = "NLPHelpDesk.MLModels.priority_model.zip";
+        string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MLModels", "category_model.zip");
 
-        using (var stream = assembly.GetManifestResourceStream(resourceName))
-        {
-            if (stream == null)
-            {
-                _logger.LogError("Model resource not found in the assembly.");
-                return null;
-            }
-            
-            using (var fileStream = new FileStream(modelPath, FileMode.Create, FileAccess.Write))
-            {
-                await stream.CopyToAsync(fileStream);
-            }
-        }
-        
         try
         {
             DataViewSchema modelSchema;

@@ -5,6 +5,7 @@ using Microsoft.Azure.Functions.Worker;
 using Microsoft.Extensions.Logging;
 using NLPHelpDesk.Data.Enums;
 using NLPHelpDesk.Data.Models;
+using NLPHelpDesk.Function.Interfaces;
 using NLPHelpDesk.Interfaces;
 using static NLPHelpDesk.Helpers.Constants;
 
