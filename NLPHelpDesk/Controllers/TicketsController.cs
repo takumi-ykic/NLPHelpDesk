@@ -116,7 +116,7 @@ public class TicketsController : Controller
         if (ticket.Comments != null && ticket.Comments.Any())
         {
             // Call GetCommentFileUrls method to get url
-            GetCommetnFileUrls(ticket.Comments);
+            await GetCommetnFileUrls(ticket.Comments);
         }
 
         // Check if this ticket is owned by login user
@@ -549,7 +549,7 @@ public class TicketsController : Controller
         if (ticketCompletionDetails.Comments != null && ticketCompletionDetails.Comments.Any())
         {
             // Call GetCommentFileUrls method to get url
-            GetCommetnFileUrls(ticketCompletionDetails.Comments);
+            await GetCommetnFileUrls(ticketCompletionDetails.Comments);
         }
 
         // Return the details view

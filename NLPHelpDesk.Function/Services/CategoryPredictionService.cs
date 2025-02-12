@@ -47,68 +47,32 @@ public class CategoryPredictionService : ICategoryPredictionService
     /// <summary>
     /// Trains the machine learning model for category prediction.
     /// </summary>
-    /// <param name="data">The training data as a list of <see cref="CsvData"/> objects.</param>
     /// <returns>The trained <see cref="ITransformer"/> model, or null if training fails.</returns>
     private async Task<ITransformer> GetModelAsync()
     {
-        // string modelPath;
-        //
-        // // Check if running locally or in Azure
-        // if (Environment.GetEnvironmentVariable("AZURE_FUNCTIONS_ENVIRONMENT") == "Development")
-        // {
-        //     // For local development, model is in the MLModels folder
-        //     modelPath = Path.Combine(Path.GetFullPath(Path.Combine(Directory.GetCurrentDirectory(), "..", "..", "..", "..")), "NLPHelpDesk", "MLModels", "category_model.zip");
-        // }
-        // else
-        // {
-        //     // For Azure, model will be extracted to the HOME directory
-        //     modelPath = Path.Combine(Environment.GetEnvironmentVariable("HOME"), "category_model.zip");
-        // }
-        
-        // Get path for model
-        // var assembly = Assembly.GetExecutingAssembly();
-        // string resourceName = "NLPHelpDesk.MLModels.category_model.zip";
-        //
-        // using (var stream = assembly.GetManifestResourceStream(resourceName))
-        // {
-        //     if (stream == null)
-        //     {
-        //         _logger.LogError("Model resource not found in the assembly.");
-        //         return null;
-        //     }
-        //     
-        //     using (var fileStream = new FileStream(modelPath, FileMode.Create, FileAccess.Write))
-        //     {
-        //         await stream.CopyToAsync(fileStream);
-        //     }
-        // }
-        //
-        // try
-        // {
-        //     DataViewSchema modelSchema;
-        //     var model = _mlContext.Model.Load(modelPath, out modelSchema);
-        //     _logger.LogInformation("Model loaded successfully.");
-        //     return model;
-        // }
-        // catch (Exception ex)
-        // {
-        //     _logger.LogError(ex, "Error loading the model.");
-        //     return null;
-        // }
-        
-        
         string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MLModels", "category_model.zip");
 
         try
         {
+            // Attempt to load the model. The 'out modelSchema' parameter receives the schema of the loaded model.
             DataViewSchema modelSchema;
             var model = _mlContext.Model.Load(modelPath, out modelSchema);
             _logger.LogInformation("Model loaded successfully.");
             return model;
         }
-        catch (Exception ex)
+        catch (FileNotFoundException ex) // Catch specific exceptions for better error handling
         {
-            _logger.LogError(ex, "Error loading the model.");
+            _logger.LogError(ex, "Model file not found at: {ModelPath}", modelPath);
+            return null;
+        }
+        catch (InvalidDataException ex)  // For corrupted model files
+        {
+            _logger.LogError(ex, "Invalid model file format at: {ModelPath}", modelPath);
+            return null;
+        }
+        catch (Exception ex) // Catching a general exception is still important
+        {
+            _logger.LogError(ex, "Error loading the model from: {ModelPath}", modelPath);
             return null;
         }
     }
