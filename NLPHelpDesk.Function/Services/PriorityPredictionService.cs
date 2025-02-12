@@ -95,7 +95,7 @@ public class PriorityPredictionService : IPriorityPredictionService
         //     return null;
         // }
         
-        string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MLModels", "category_model.zip");
+        string modelPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "MLModels", "priority_model.zip");
 
         try
         {
