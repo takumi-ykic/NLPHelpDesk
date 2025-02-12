@@ -13,8 +13,7 @@ var host = new HostBuilder()
     .ConfigureServices((hostContext, services) =>
     {
         // Get connection string from environment variables
-        //string connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
-        string connectionString = Environment.GetEnvironmentVariable("SQLCONNSTR_DefaultConnection");
+        string connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
         
         // Register ApplicationContext with Entity Framework Core
         services.AddDbContext<ApplicationContext>(options =>
