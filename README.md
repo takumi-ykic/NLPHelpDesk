@@ -1,13 +1,14 @@
 # NLPHelpDesk
 
-Ticket management system using Natural Language Process 
+Ticket management system using Natural Language Process.  
 [Click to move NLP Help Desk deploying in Azure App Service.](https://nlphelpdesk-v-1.azurewebsites.net/) 
 
 ## Application overview
 
-NLP Help Desk is a web-based application designed to streamline help desk operations by automating the categorization and prioritization of incoming tickets and facilitating efficient communication between users and support staff.  
-Leveraging Natural Language Processing (NLP) and Term Frequency-Inverse Document Frequency (TF-IDF) techniques, the system analyzes ticket descriptions. 
-The application provides distinct user roles (Technician and End-User) with role-specific functionalities for managing tickets, products, and user assignments.
+This project aims to develop a web-based application, the "NLP Help Desk," to streamline help desk operations.  
+The objective is to reduce the overhead on help desk technicians by automating the categorization and prioritization of incoming tickets using Natural Language Processing (NLP) and Term Frequency-Inverse Document Frequency (TF-IDF) techniques.  
+This automated system will analyze ticket descriptions, classify them into relevant help desk categories, and prioritize them, enabling technicians to focus on critical issues and respond to threats more effectively.  
+The application will provide distinct user roles (Technician and End-User) with tailored functionalities, a user-friendly interface, and a built-in chat function to facilitate communication and improve overall help desk efficiency.  
 
 This project is structured into four main components:
 
